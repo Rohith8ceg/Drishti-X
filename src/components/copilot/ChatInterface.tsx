@@ -2,7 +2,9 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Send, Mic, Sparkles, AlertCircle } from 'lucide-react';
+import { Send, Sparkles, AlertCircle } from 'lucide-react';
+import VoiceToggle from '@/components/copilot/VoiceToggle';
+import SuggestedFollowUps from '@/components/copilot/SuggestedFollowUps';
 
 interface ChatMessage {
   id: string;
@@ -115,17 +117,7 @@ export default function ChatInterface({ onAnalyzeStart, onAnalyzeEnd, onQueryCha
               
               {/* Follow-up Suggestions */}
               {msg.suggestions && msg.suggestions.length > 0 && (
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {msg.suggestions.map((suggestion, idx) => (
-                    <button 
-                      key={idx}
-                      onClick={() => handleSend(suggestion)}
-                      className="text-xs bg-white/5 hover:bg-drishti-cyan/20 border border-white/10 hover:border-drishti-cyan/50 text-gray-300 hover:text-drishti-cyan px-3 py-1.5 rounded-full transition-colors flex items-center gap-1"
-                    >
-                      {suggestion}
-                    </button>
-                  ))}
-                </div>
+                <SuggestedFollowUps suggestions={msg.suggestions} onSelect={handleSend} />
               )}
             </motion.div>
           ))}
@@ -144,10 +136,10 @@ export default function ChatInterface({ onAnalyzeStart, onAnalyzeEnd, onQueryCha
 
       {/* Input Area */}
       <div className="p-4 border-t border-white/10 bg-[#0B0F19]">
-        <div className="relative flex items-center">
-          <button className="absolute left-3 text-gray-400 hover:text-drishti-cyan transition-colors">
-            <Mic className="w-5 h-5" />
-          </button>
+        <div className="relative flex items-center gap-2">
+          <div className="absolute left-3 top-1/2 -translate-y-1/2">
+            <VoiceToggle onTranscript={(value) => setInput(value)} />
+          </div>
           <input 
             type="text" 
             value={input}
@@ -155,7 +147,7 @@ export default function ChatInterface({ onAnalyzeStart, onAnalyzeEnd, onQueryCha
             onKeyDown={(e) => e.key === 'Enter' && handleSend(input)}
             disabled={isTyping}
             placeholder="Ask AI to investigate..." 
-            className="w-full bg-white/5 border border-white/10 rounded-full py-3 pl-11 pr-12 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-drishti-cyan/50 focus:ring-1 focus:ring-drishti-cyan/50 transition-all"
+            className="w-full bg-white/5 border border-white/10 rounded-full py-3 pl-[88px] pr-12 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-drishti-cyan/50 focus:ring-1 focus:ring-drishti-cyan/50 transition-all"
           />
           <button 
             onClick={() => handleSend(input)}
