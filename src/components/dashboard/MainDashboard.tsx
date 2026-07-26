@@ -2,15 +2,18 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ShieldAlert, Crosshair, Radar, BrainCircuit, Activity } from 'lucide-react';
+import { ShieldAlert, Crosshair, Radar, BrainCircuit, Activity, Zap } from 'lucide-react';
 import ChatInterface from '@/components/copilot/ChatInterface';
+import AgentPipeline from '@/components/agent/AgentPipeline';
 
 export default function MainDashboard() {
   const [activeModule, setActiveModule] = useState<'timeline' | 'network' | 'heatmap'>('network');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [isPipelineActive, setIsPipelineActive] = useState(false);
 
   return (
     <div className="min-h-screen bg-[#0B0F19] text-white flex flex-col overflow-hidden relative">
+      <AgentPipeline isActive={isPipelineActive} onComplete={() => setIsPipelineActive(false)} />
       {/* Background ambient grid & glowing orbs */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none"></div>
       <div className="absolute top-0 right-1/4 w-96 h-96 bg-drishti-cyan/10 rounded-full blur-[100px] pointer-events-none"></div>
@@ -30,6 +33,10 @@ export default function MainDashboard() {
         </div>
         
         <div className="flex gap-4">
+          <button onClick={() => setIsPipelineActive(true)} className="flex items-center gap-2 bg-drishti-cyan/20 text-drishti-cyan px-4 py-1 rounded-full border border-drishti-cyan/50 hover:bg-drishti-cyan/40 transition-colors">
+            <Zap className="w-4 h-4" />
+            <span className="text-sm font-bold">Auto-Investigate</span>
+          </button>
           <button className="text-sm font-medium text-gray-400 hover:text-white transition-colors">Intelligence Brief</button>
           <button className="text-sm font-medium text-gray-400 hover:text-white transition-colors">Audit Logs</button>
           <div className="flex items-center gap-2 bg-white/5 px-3 py-1 rounded-full border border-white/10">
