@@ -138,7 +138,7 @@ export default function MainDashboard() {
       </header>
 
       {/* ── MAIN 3-COLUMN LAYOUT ── */}
-      <main className="flex-1 flex overflow-hidden z-10 p-4 gap-4">
+      <main className="flex-1 flex min-h-0 overflow-hidden z-10 p-4 gap-4">
 
         {/* ── LEFT: Copilot Chat ── */}
         <section className="w-[360px] flex flex-col glass-panel rounded-xl overflow-hidden relative border border-white/10 shrink-0">
@@ -163,7 +163,7 @@ export default function MainDashboard() {
         </section>
 
         {/* ── CENTER: Canvas Workspace ── */}
-        <section className="flex-1 flex flex-col glass-panel rounded-xl overflow-hidden border border-white/10 relative">
+        <section className="flex-1 flex flex-col min-h-0 glass-panel rounded-xl overflow-hidden border border-white/10 relative">
           {/* Module tab bar */}
           <div className="p-3 border-b border-white/10 bg-white/5 flex gap-2 flex-wrap">
             {(
@@ -187,13 +187,29 @@ export default function MainDashboard() {
             ))}
           </div>
 
-          <div className="flex-1 relative overflow-hidden">
+          <div className="flex-1 min-h-0 relative overflow-hidden">
             <NLFilterBar query={nlQuery} summary={nlSummary} filters={nlFilters} />
 
-            <div className="p-4 space-y-4 h-full overflow-y-auto">
-              <InvestigationCanvas />
-              <DetectiveAutoWorkflow />
-              <BriefingGenerator />
+            <div className="p-4 h-[calc(100%-88px)] min-h-0 overflow-y-auto">
+              {activeModule === 'network' ? (
+                <div className="h-full min-h-[420px]">
+                  <NetworkGraph />
+                </div>
+              ) : activeModule === 'timeline' ? (
+                <div className="h-full min-h-[420px]">
+                  <TimelineReplay />
+                </div>
+              ) : activeModule === 'forecast' ? (
+                <div className="h-full min-h-[420px]">
+                  <RiskForecastCard />
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  <InvestigationCanvas />
+                  <DetectiveAutoWorkflow />
+                  <BriefingGenerator />
+                </div>
+              )}
             </div>
 
             {/* Analyzing overlay */}
@@ -244,22 +260,6 @@ export default function MainDashboard() {
               )}
             </AnimatePresence>
 
-            {/* Module renderers */}
-            {activeModule === 'network' && (
-              <div className="w-full h-full">
-                <NetworkGraph />
-              </div>
-            )}
-            {activeModule === 'timeline' && (
-              <div className="w-full h-full p-4">
-                <TimelineReplay />
-              </div>
-            )}
-            {activeModule === 'forecast' && (
-              <div className="w-full h-full p-6 overflow-y-auto">
-                <RiskForecastCard />
-              </div>
-            )}
           </div>
         </section>
 

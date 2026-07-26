@@ -54,8 +54,14 @@ export default function NetworkGraph() {
         </div>
       </div>
 
-      <div className="flex-1 rounded-2xl border border-white/10 overflow-hidden">
-        <ReactFlow nodes={nodes} edges={edges} fitView onNodesChange={onNodesChange}>
+      <div className="flex-1 min-h-[420px] rounded-2xl border border-white/10 overflow-hidden">
+        <ReactFlow
+          nodes={nodes}
+          edges={edges}
+          fitView
+          onNodesChange={onNodesChange}
+          style={{ width: '100%', height: '100%' }}
+        >
           <MiniMap />
           <Controls />
           <Background gap={12} size={1} />
