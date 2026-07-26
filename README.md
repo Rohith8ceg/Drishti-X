@@ -129,6 +129,10 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000).
+Deployed URL: https://drishti-x-50044360703.development.catalystappsail.in/
+
+Drive Link: https://drive.google.com/file/d/1M4LapLh4yA8-TFXNBfGJ-_ZVyQDSWbFC/view?usp=sharing
+Youtube Link: https://youtu.be/VTSDECkCySo?si=3Hhkaj3pE6ctnPfp
 
 ### Production build
 
