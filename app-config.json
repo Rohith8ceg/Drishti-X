@@ -1,0 +1,5 @@
+{
+  "stack": "node24",
+  "build_path": ".",
+  "command": "npm run start"
+}

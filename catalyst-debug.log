@@ -1,0 +1,42 @@
+[debug] [2026-07-26T11:56:56.776Z] : 
+[debug] [2026-07-26T11:56:56.779Z] : ----------------------------------------------------------------------
+[debug] [2026-07-26T11:56:56.780Z] : Command:      C:\Program Files\nodejs\node.exe D:\GenAI\Datathon\Drishti-X\node_modules\zcatalyst-cli\lib\bin\catalyst.js deploy
+[debug] [2026-07-26T11:56:56.780Z] : CLI Version:  1.27.0
+[debug] [2026-07-26T11:56:56.781Z] : Platform:     win32
+[debug] [2026-07-26T11:56:56.781Z] : Node Version: v22.17.1
+[debug] [2026-07-26T11:56:56.781Z] : Time:         Sun Jul 26 2026 17:26:56 GMT+0530 (India Standard Time)
+[debug] [2026-07-26T11:56:56.781Z] : ----------------------------------------------------------------------
+[debug] [2026-07-26T11:56:56.781Z] : 
+[debug] [2026-07-26T11:57:02.041Z] : > authorizing via signed-in user option
+[debug] [2026-07-26T11:57:02.042Z] : > command requires scopes: ["ZohoCatalyst.projects.ALL","ZohoCatalyst.functions.ALL","ZohoCatalyst.webapp.ALL","ZohoCatalyst.appsail.Update"]
+[debug] [2026-07-26T11:57:02.769Z] : >>>> HTTP REQUEST : GET https://api.catalyst.zoho.in/baas/v1/project/54565000000013048 
+
+[debug] [2026-07-26T11:57:03.046Z] : <<<< HTTP RESPONSE : 200
+Response Headers: {"server":"ZGS","date":"Sun, 26 Jul 2026 11:57:02 GMT","content-type":"application/vnd.catalyst.v2+json","transfer-encoding":"chunked","connection":"keep-alive","x-content-type-options":"nosniff","cache-control":"private,no-cache,no-store,max-age=0,must-revalidate","pragma":"no-cache","expires":"Thu, 01 Jan 1970 00:00:00 GMT","x-frame-options":"DENY","strict-transport-security":"max-age=64072000; includeSubDomains; preload"}
+
+[debug] [2026-07-26T11:57:03.056Z] : >>>> HTTP REQUEST : GET https://api.catalyst.zoho.in/baas/v1/project/54565000000013048/environment 
+
+[debug] [2026-07-26T11:57:03.126Z] : <<<< HTTP RESPONSE : 200
+Response Headers: {"server":"ZGS","date":"Sun, 26 Jul 2026 11:57:03 GMT","content-type":"application/vnd.catalyst.v2+json","transfer-encoding":"chunked","connection":"keep-alive","x-content-type-options":"nosniff","cache-control":"private,no-cache,no-store,max-age=0,must-revalidate","pragma":"no-cache","expires":"Thu, 01 Jan 1970 00:00:00 GMT","x-frame-options":"DENY","strict-transport-security":"max-age=64072000; includeSubDomains; preload"}
+
+[debug] [2026-07-26T12:27:27.229Z] : 
+[debug] [2026-07-26T12:27:27.233Z] : ----------------------------------------------------------------------
+[debug] [2026-07-26T12:27:27.234Z] : Command:      C:\Program Files\nodejs\node.exe D:\GenAI\Datathon\Drishti-X\node_modules\zcatalyst-cli\lib\bin\catalyst.js deploy
+[debug] [2026-07-26T12:27:27.234Z] : CLI Version:  1.27.0
+[debug] [2026-07-26T12:27:27.235Z] : Platform:     win32
+[debug] [2026-07-26T12:27:27.235Z] : Node Version: v22.17.1
+[debug] [2026-07-26T12:27:27.235Z] : Time:         Sun Jul 26 2026 17:57:27 GMT+0530 (India Standard Time)
+[debug] [2026-07-26T12:27:27.235Z] : ----------------------------------------------------------------------
+[debug] [2026-07-26T12:27:27.235Z] : 
+[debug] [2026-07-26T12:28:08.752Z] : > authorizing via signed-in user option
+[debug] [2026-07-26T12:28:08.753Z] : > command requires scopes: ["ZohoCatalyst.projects.ALL","ZohoCatalyst.functions.ALL","ZohoCatalyst.webapp.ALL","ZohoCatalyst.appsail.Update"]
+[debug] [2026-07-26T12:28:09.048Z] : >>>> HTTP REQUEST : GET https://api.catalyst.zoho.in/baas/v1/project/54565000000013048 
+
+[debug] [2026-07-26T12:28:09.254Z] : <<<< HTTP RESPONSE : 200
+Response Headers: {"server":"ZGS","date":"Sun, 26 Jul 2026 12:28:09 GMT","content-type":"application/vnd.catalyst.v2+json","transfer-encoding":"chunked","connection":"keep-alive","x-content-type-options":"nosniff","cache-control":"private,no-cache,no-store,max-age=0,must-revalidate","pragma":"no-cache","expires":"Thu, 01 Jan 1970 00:00:00 GMT","x-frame-options":"DENY","strict-transport-security":"max-age=64072000; includeSubDomains; preload"}
+
+[debug] [2026-07-26T12:28:09.264Z] : >>>> HTTP REQUEST : GET https://api.catalyst.zoho.in/baas/v1/project/54565000000013048/environment 
+
+[debug] [2026-07-26T12:28:09.331Z] : <<<< HTTP RESPONSE : 200
+Response Headers: {"server":"ZGS","date":"Sun, 26 Jul 2026 12:28:09 GMT","content-type":"application/vnd.catalyst.v2+json","transfer-encoding":"chunked","connection":"keep-alive","x-content-type-options":"nosniff","cache-control":"private,no-cache,no-store,max-age=0,must-revalidate","pragma":"no-cache","expires":"Thu, 01 Jan 1970 00:00:00 GMT","x-frame-options":"DENY","strict-transport-security":"max-age=64072000; includeSubDomains; preload"}
+

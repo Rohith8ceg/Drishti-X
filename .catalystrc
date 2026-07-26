@@ -1,0 +1,29 @@
+{
+  "defaults": {
+    "project": 1
+  },
+  "actives": {
+    "project": 1,
+    "env": 1
+  },
+  "projects": [
+    {
+      "idx": 1,
+      "id": "54565000000013048",
+      "name": "DRISHTI-X",
+      "domain": {
+        "id": "50044360703",
+        "name": "drishti-x-60080165231.development"
+      },
+      "timezone": "Asia/Kolkata",
+      "env": [
+        {
+          "idx": 1,
+          "id": "60080165231",
+          "name": "Development",
+          "type": 3
+        }
+      ]
+    }
+  ]
+}
