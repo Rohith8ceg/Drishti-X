@@ -87,7 +87,7 @@ export default function MainDashboard() {
   return (
     <>
     <WhyModal isOpen={whyOpen} onClose={() => setWhyOpen(false)} />
-    <div className="min-h-screen bg-[#0B0F19] text-white flex flex-col overflow-hidden relative">
+    <div className="h-screen bg-[#0B0F19] text-white flex flex-col overflow-hidden relative">
       <AgentPipeline isActive={isPipelineActive} onComplete={() => setIsPipelineActive(false)} />
 
       {/* Ambient background */}
@@ -187,10 +187,12 @@ export default function MainDashboard() {
             ))}
           </div>
 
-          <div className="flex-1 min-h-0 relative overflow-hidden">
-            <NLFilterBar query={nlQuery} summary={nlSummary} filters={nlFilters} />
+          <div className="flex-1 min-h-0 relative overflow-hidden flex flex-col">
+            <div className="shrink-0">
+              <NLFilterBar query={nlQuery} summary={nlSummary} filters={nlFilters} />
+            </div>
 
-            <div className="p-4 h-[calc(100%-88px)] min-h-0 overflow-y-auto">
+            <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain p-4">
               {activeModule === 'network' ? (
                 <div className="h-full min-h-[420px]">
                   <NetworkGraph />

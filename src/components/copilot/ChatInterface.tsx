@@ -88,9 +88,9 @@ export default function ChatInterface({ onAnalyzeStart, onAnalyzeEnd, onQueryCha
   };
 
   return (
-    <div className="flex flex-col h-full bg-[#050505]">
+    <div className="flex h-full min-h-0 flex-col overflow-hidden bg-[#050505]">
       {/* Chat Messages Area */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-6">
+      <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-4 space-y-6">
         <AnimatePresence>
           {messages.map((msg) => (
             <motion.div 
@@ -135,7 +135,7 @@ export default function ChatInterface({ onAnalyzeStart, onAnalyzeEnd, onQueryCha
       </div>
 
       {/* Input Area */}
-      <div className="p-4 border-t border-white/10 bg-[#0B0F19]">
+      <div className="shrink-0 p-4 border-t border-white/10 bg-[#0B0F19]">
         <div className="relative flex items-center gap-2">
           <div className="absolute left-3 top-1/2 -translate-y-1/2">
             <VoiceToggle onTranscript={(value) => setInput(value)} />

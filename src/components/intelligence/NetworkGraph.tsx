@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useMemo, useState } from 'react';
-import { ReactFlow, MiniMap, Controls, Background, type Node, type Edge, type OnNodesChange, type OnEdgesChange } from '@xyflow/react';
+import { ReactFlow, Controls, Background, applyNodeChanges, type Node, type Edge, type OnNodesChange } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { getNetworkData } from '@/lib/mockData';
 
@@ -27,19 +27,7 @@ export default function NetworkGraph() {
   }, [selectedNode]);
 
   const onNodesChange: OnNodesChange = (changes) => {
-    setNodes((current) => current.map((node) => ({ ...node, selected: false })));
-    setNodes((current) => {
-      const next = current.map((node) => {
-        const match = changes.find((change) => change.type === 'select' && change.id === node.id);
-        if (match) {
-          return { ...node, selected: true };
-        }
-        return node;
-      });
-      const selected = next.find((node) => node.selected) ?? null;
-      setSelectedNode(selected as Node | null);
-      return next;
-    });
+    setNodes((current) => applyNodeChanges(changes, current));
   };
 
   return (
@@ -60,9 +48,11 @@ export default function NetworkGraph() {
           edges={edges}
           fitView
           onNodesChange={onNodesChange}
+          onNodeClick={(_, node) => setSelectedNode(node)}
+          defaultEdgeOptions={{ type: 'smoothstep' }}
+          minZoom={0.35}
           style={{ width: '100%', height: '100%' }}
         >
-          <MiniMap />
           <Controls />
           <Background gap={12} size={1} />
         </ReactFlow>

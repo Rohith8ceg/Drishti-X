@@ -8,18 +8,38 @@ export const getTimelineEvents = () => {
 };
 
 export const getNetworkData = () => {
-  // Convert mock networks into React Flow nodes/edges format
-  const nodes = mockData.networks.map((net, i) => ({
-    id: net.id,
-    data: { label: net.name },
-    position: { x: i * 200, y: i * 100 },
-  }));
-  const edges: Array<{ id: string; source: string; target: string; animated: boolean }> = [];
-  mockData.networks.forEach(net => {
-    net.member_ids.forEach(memberId => {
-      edges.push({ id: `${net.id}-${memberId}`, source: net.leader_id, target: memberId, animated: true });
-    });
-  });
+  const network = mockData.networks[0];
+  if (!network) return { nodes: [], edges: [] };
+
+  const memberIds = [...new Set([network.leader_id, ...network.member_ids])].slice(0, 5);
+  const members = memberIds
+    .map((id) => mockData.suspects.find((suspect) => suspect.id === id))
+    .filter((suspect): suspect is Suspect => Boolean(suspect));
+  const linkedCrime = mockData.crimes.find((crime) =>
+    crime.suspect_ids.some((id) => memberIds.includes(id)),
+  ) ?? mockData.crimes[0];
+  const vehicleId = `${network.id}-vehicle`;
+
+  const nodes = [
+    { id: network.id, data: { label: network.name, kind: 'Network', detail: `${network.threat_level} threat` }, position: { x: 40, y: 180 }, style: { background: '#164e63', border: '1px solid #22d3ee', color: '#ecfeff', borderRadius: 12, padding: 10 } },
+    ...members.map((member, index) => ({
+      id: member.id,
+      data: { label: member.alias, kind: index === 0 ? 'Leader' : 'Associate', detail: `${member.crimes_count} linked cases` },
+      position: { x: 280, y: 40 + index * 105 },
+      style: { background: index === 0 ? '#7f1d1d' : '#312e81', border: '1px solid #a78bfa', color: '#f5f3ff', borderRadius: 12, padding: 10 },
+    })),
+    { id: vehicleId, data: { label: members[0]?.vehicles[0] ?? 'KA-01-M-4821', kind: 'Vehicle', detail: 'Repeated CCTV sighting' }, position: { x: 575, y: 105 }, style: { background: '#78350f', border: '1px solid #fbbf24', color: '#fffbeb', borderRadius: 12, padding: 10 } },
+    { id: linkedCrime.id, data: { label: linkedCrime.type, kind: 'Linked FIR', detail: `${linkedCrime.district} · ${linkedCrime.fir_number}` }, position: { x: 575, y: 300 }, style: { background: '#7f1d1d', border: '1px solid #fb7185', color: '#fff1f2', borderRadius: 12, padding: 10 } },
+  ];
+
+  const edges = members.flatMap((member, index) => [
+    { id: `${network.id}-${member.id}`, source: network.id, target: member.id, animated: index === 0, style: { stroke: '#22d3ee' } },
+    ...(index === 0 ? [
+      { id: `${member.id}-${vehicleId}`, source: member.id, target: vehicleId, animated: true, style: { stroke: '#fbbf24' } },
+      { id: `${member.id}-${linkedCrime.id}`, source: member.id, target: linkedCrime.id, animated: true, style: { stroke: '#fb7185' } },
+    ] : []),
+  ]);
+
   return { nodes, edges };
 };
 
