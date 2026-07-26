@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Zap, Activity, Radar, Crosshair, ShieldAlert, TrendingUp, BarChart3, AlertTriangle } from 'lucide-react';
+import { Zap, Activity, Radar, Crosshair, ShieldAlert, TrendingUp, BarChart3, AlertTriangle, HelpCircle, ClipboardList } from 'lucide-react';
 import TimelineReplay from '@/components/visualizers/TimelineReplay';
 import NetworkGraph from '@/components/intelligence/NetworkGraph';
 import ChatInterface from '@/components/copilot/ChatInterface';
@@ -11,14 +11,17 @@ import BrainCircuit from '@/components/ui/icons/BrainCircuit';
 import RiskForecastCard from '@/components/intelligence/RiskForecastCard';
 import ActionRecommendations from '@/components/intelligence/ActionRecommendations';
 import ConfidenceMeter from '@/components/ui/ConfidenceMeter';
+import WhyModal from '@/components/intelligence/WhyModal';
+import AuditLogs from '@/components/tools/AuditLogs';
 
 type Module = 'timeline' | 'network' | 'heatmap' | 'forecast';
-type RightPanel = 'threats' | 'forecast' | 'recommendations';
+type RightPanel = 'threats' | 'forecast' | 'recommendations' | 'audit';
 
 const rightTabs: { id: RightPanel; label: string; icon: React.ReactNode }[] = [
   { id: 'threats', label: 'Threats', icon: <ShieldAlert className="w-3 h-3" /> },
   { id: 'forecast', label: 'Forecast', icon: <TrendingUp className="w-3 h-3" /> },
   { id: 'recommendations', label: 'Actions', icon: <Zap className="w-3 h-3" /> },
+  { id: 'audit', label: 'Audit', icon: <ClipboardList className="w-3 h-3" /> },
 ];
 
 const LIVE_METRICS = [
@@ -33,8 +36,11 @@ export default function MainDashboard() {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [isPipelineActive, setIsPipelineActive] = useState(false);
   const [rightPanel, setRightPanel] = useState<RightPanel>('threats');
+  const [whyOpen, setWhyOpen] = useState(false);
 
   return (
+    <>
+    <WhyModal isOpen={whyOpen} onClose={() => setWhyOpen(false)} />
     <div className="min-h-screen bg-[#0B0F19] text-white flex flex-col overflow-hidden relative">
       <AgentPipeline isActive={isPipelineActive} onComplete={() => setIsPipelineActive(false)} />
 
@@ -257,6 +263,12 @@ export default function MainDashboard() {
                       </div>
                       <div className="text-sm text-gray-200 font-medium">{item.label}</div>
                       <div className="text-[11px] text-gray-500 mt-0.5">{item.detail}</div>
+                      <button
+                        onClick={() => setWhyOpen(true)}
+                        className="mt-2 text-[10px] font-bold text-drishti-cyan bg-drishti-cyan/10 hover:bg-drishti-cyan/20 border border-drishti-cyan/30 px-2.5 py-1 rounded-full flex items-center gap-1 transition-all"
+                      >
+                        <HelpCircle className="w-3 h-3" /> Why?
+                      </button>
                     </motion.div>
                   ))}
                 </motion.div>
@@ -285,10 +297,23 @@ export default function MainDashboard() {
                   <ActionRecommendations />
                 </motion.div>
               )}
+
+              {rightPanel === 'audit' && (
+                <motion.div
+                  key="audit"
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  className="h-full"
+                >
+                  <AuditLogs />
+                </motion.div>
+              )}
             </AnimatePresence>
           </div>
         </section>
       </main>
     </div>
+    </>
   );
 }
