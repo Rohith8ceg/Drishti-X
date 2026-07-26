@@ -16,25 +16,25 @@ export default function AgentPipeline({ isActive, onComplete }: { isActive: bool
   const [activeAgentIndex, setActiveAgentIndex] = useState(-1);
 
   useEffect(() => {
-    if (isActive) {
-      setActiveAgentIndex(0);
-      
-      const interval = setInterval(() => {
-        setActiveAgentIndex(prev => {
-          if (prev >= AGENTS.length - 1) {
-            clearInterval(interval);
-            setTimeout(() => onComplete?.(), 1000);
-            return prev + 1; // All complete
-          }
-          return prev + 1;
-        });
-      }, 1500); // Sequence every 1.5s
-      
-      return () => clearInterval(interval);
-    } else {
+    if (!isActive) {
       setActiveAgentIndex(-1);
+      return;
     }
+
+    setActiveAgentIndex(0);
+    const interval = window.setInterval(() => {
+      setActiveAgentIndex((previous) => previous + 1);
+    }, 1500);
+
+    return () => window.clearInterval(interval);
   }, [isActive, onComplete]);
+
+  useEffect(() => {
+    if (!isActive || activeAgentIndex < AGENTS.length) return;
+
+    const completionTimer = window.setTimeout(() => onComplete?.(), 1000);
+    return () => window.clearTimeout(completionTimer);
+  }, [activeAgentIndex, isActive, onComplete]);
 
   if (!isActive && activeAgentIndex === -1) return null;
 

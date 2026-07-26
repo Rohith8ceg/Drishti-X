@@ -18,9 +18,10 @@ interface ChatInterfaceProps {
   onAnalyzeStart: () => void;
   onAnalyzeEnd: () => void;
   onQueryChange?: (query: string, summary: string, filters: string[]) => void;
+  onViewRequest?: (view: 'timeline' | 'network' | 'forecast') => void;
 }
 
-export default function ChatInterface({ onAnalyzeStart, onAnalyzeEnd, onQueryChange }: ChatInterfaceProps) {
+export default function ChatInterface({ onAnalyzeStart, onAnalyzeEnd, onQueryChange, onViewRequest }: ChatInterfaceProps) {
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([
@@ -63,6 +64,15 @@ export default function ChatInterface({ onAnalyzeStart, onAnalyzeEnd, onQueryCha
     }
 
     onQueryChange?.(normalized, summary, filters);
+
+    const query = normalized.toLowerCase();
+    if (query.includes('timeline') || query.includes('replay') || query.includes('fir')) {
+      onViewRequest?.('timeline');
+    } else if (query.includes('burglary') || query.includes('hotspot') || query.includes('risk') || query.includes('patrol')) {
+      onViewRequest?.('forecast');
+    } else if (query.includes('suspect') || query.includes('network') || query.includes('associate') || query.includes('vehicle')) {
+      onViewRequest?.('network');
+    }
 
     // Simulate AI thinking and response
     setTimeout(() => {

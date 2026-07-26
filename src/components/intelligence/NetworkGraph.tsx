@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useMemo, useState } from 'react';
-import { ReactFlow, Controls, Background, applyNodeChanges, type Node, type Edge, type OnNodesChange } from '@xyflow/react';
+import { ReactFlow, Background, applyNodeChanges, type Node, type Edge, type OnNodesChange } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { getNetworkData } from '@/lib/mockData';
 
@@ -51,9 +51,9 @@ export default function NetworkGraph() {
           onNodeClick={(_, node) => setSelectedNode(node)}
           defaultEdgeOptions={{ type: 'smoothstep' }}
           minZoom={0.35}
+          proOptions={{ hideAttribution: true }}
           style={{ width: '100%', height: '100%' }}
         >
-          <Controls />
           <Background gap={12} size={1} />
         </ReactFlow>
       </div>

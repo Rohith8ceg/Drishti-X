@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { AlertTriangle, TrendingUp, MapPin, Calendar, ChevronDown, ChevronUp } from 'lucide-react';
 import { useState } from 'react';
 import ConfidenceMeter from '@/components/ui/ConfidenceMeter';
+import RiskHeatmap from '@/components/intelligence/RiskHeatmap';
 
 interface ForecastItem {
   id: string;
@@ -86,7 +87,7 @@ export default function RiskForecastCard() {
   const [expanded, setExpanded] = useState<string | null>('f1');
 
   return (
-    <div className="h-full flex flex-col gap-3 overflow-y-auto pr-1 scrollbar-thin">
+    <div className="flex flex-col gap-3">
       {/* Header */}
       <div className="flex items-center justify-between mb-1">
         <h2 className="text-base font-bold text-white flex items-center gap-2">
@@ -97,6 +98,8 @@ export default function RiskForecastCard() {
           7-DAY WINDOW
         </span>
       </div>
+
+      <RiskHeatmap />
 
       {FORECASTS.map((fc, idx) => {
         const col = riskColor(fc.risk);

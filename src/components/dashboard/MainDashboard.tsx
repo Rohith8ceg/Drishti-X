@@ -2,12 +2,11 @@
 
 import { useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Zap, Activity, Radar, Crosshair, ShieldAlert, TrendingUp, BarChart3, AlertTriangle, HelpCircle, ClipboardList } from 'lucide-react';
+import { Zap, Activity, Radar, Crosshair, ShieldAlert, TrendingUp, BarChart3, AlertTriangle, HelpCircle, ClipboardList, BrainCircuit } from 'lucide-react';
 import TimelineReplay from '@/components/visualizers/TimelineReplay';
 import NetworkGraph from '@/components/intelligence/NetworkGraph';
 import ChatInterface from '@/components/copilot/ChatInterface';
 import AgentPipeline from '@/components/agent/AgentPipeline';
-import BrainCircuit from '@/components/ui/icons/BrainCircuit';
 import RiskForecastCard from '@/components/intelligence/RiskForecastCard';
 import ActionRecommendations from '@/components/intelligence/ActionRecommendations';
 import ConfidenceMeter from '@/components/ui/ConfidenceMeter';
@@ -18,7 +17,7 @@ import InvestigationCanvas from '@/components/workspace/InvestigationCanvas';
 import DetectiveAutoWorkflow from '@/components/workspace/DetectiveAutoWorkflow';
 import BriefingGenerator from '@/components/intelligence/BriefingGenerator';
 
-type Module = 'timeline' | 'network' | 'heatmap' | 'forecast';
+type Module = 'timeline' | 'network' | 'forecast' | 'investigation';
 type RightPanel = 'threats' | 'forecast' | 'recommendations' | 'audit';
 
 const rightTabs: { id: RightPanel; label: string; icon: React.ReactNode }[] = [
@@ -49,6 +48,10 @@ export default function MainDashboard() {
     setNlQuery(query);
     setNlSummary(summary);
     setNlFilters(filters);
+  };
+
+  const handleViewRequest = (view: 'timeline' | 'network' | 'forecast') => {
+    setActiveModule(view);
   };
 
   const liveMetrics = useMemo(() => {
@@ -122,14 +125,17 @@ export default function MainDashboard() {
 
         <div className="flex gap-3 items-center">
           <button
-            onClick={() => setIsPipelineActive(true)}
+            onClick={() => {
+              setActiveModule('investigation');
+              setIsPipelineActive(true);
+            }}
             className="flex items-center gap-2 bg-drishti-cyan/20 text-drishti-cyan px-4 py-1.5 rounded-full border border-drishti-cyan/50 hover:bg-drishti-cyan/40 transition-all text-sm font-bold"
           >
             <Zap className="w-4 h-4" />
             Auto-Investigate
           </button>
-          <button className="text-sm font-medium text-gray-400 hover:text-white transition-colors">Intelligence Brief</button>
-          <button className="text-sm font-medium text-gray-400 hover:text-white transition-colors">Audit Logs</button>
+          <button onClick={() => setActiveModule('investigation')} className="text-sm font-medium text-gray-400 hover:text-white transition-colors">Intelligence Brief</button>
+          <button onClick={() => setRightPanel('audit')} className="text-sm font-medium text-gray-400 hover:text-white transition-colors">Audit Logs</button>
           <div className="flex items-center gap-2 bg-white/5 px-3 py-1.5 rounded-full border border-white/10">
             <div className="w-6 h-6 rounded-full bg-gradient-to-r from-drishti-cyan to-blue-600" />
             <span className="text-sm font-semibold">SP Profile</span>
@@ -158,6 +164,7 @@ export default function MainDashboard() {
               onAnalyzeStart={() => setIsAnalyzing(true)}
               onAnalyzeEnd={() => setIsAnalyzing(false)}
               onQueryChange={handleQueryChange}
+              onViewRequest={handleViewRequest}
             />
           </div>
         </section>
@@ -171,6 +178,7 @@ export default function MainDashboard() {
                 { id: 'network', label: 'Network Graph', icon: <BarChart3 className="w-3 h-3" /> },
                 { id: 'timeline', label: 'Case Timeline', icon: <Activity className="w-3 h-3" /> },
                 { id: 'forecast', label: 'Risk Heatmap', icon: <AlertTriangle className="w-3 h-3" /> },
+                { id: 'investigation', label: 'Investigation', icon: <Crosshair className="w-3 h-3" /> },
               ] as { id: Module; label: string; icon: React.ReactNode }[]
             ).map((tab) => (
               <button
@@ -202,7 +210,7 @@ export default function MainDashboard() {
                   <TimelineReplay />
                 </div>
               ) : activeModule === 'forecast' ? (
-                <div className="h-full min-h-[420px]">
+                <div className="min-h-[420px]">
                   <RiskForecastCard />
                 </div>
               ) : (
@@ -340,7 +348,7 @@ export default function MainDashboard() {
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -8 }}
-                  className="h-full"
+                  className="h-full overflow-y-auto pr-1"
                 >
                   <RiskForecastCard />
                 </motion.div>
