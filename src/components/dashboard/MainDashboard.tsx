@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Zap, Activity, Radar, Crosshair, ShieldAlert, TrendingUp, BarChart3, AlertTriangle, HelpCircle, ClipboardList } from 'lucide-react';
 import TimelineReplay from '@/components/visualizers/TimelineReplay';
@@ -28,7 +28,7 @@ const rightTabs: { id: RightPanel; label: string; icon: React.ReactNode }[] = [
   { id: 'audit', label: 'Audit', icon: <ClipboardList className="w-3 h-3" /> },
 ];
 
-const LIVE_METRICS = [
+const DEFAULT_METRICS = [
   { label: 'Open FIRs', value: '127', delta: '+3 today', color: 'text-red-400' },
   { label: 'Suspects Tracked', value: '84', delta: 'Live', color: 'text-orange-400' },
   { label: 'Risk Zones', value: '5', delta: '↑ from 3', color: 'text-yellow-400' },
@@ -50,6 +50,39 @@ export default function MainDashboard() {
     setNlSummary(summary);
     setNlFilters(filters);
   };
+
+  const liveMetrics = useMemo(() => {
+    const lowerQuery = nlQuery.toLowerCase();
+
+    if (lowerQuery.includes('chain snatching')) {
+      return [
+        { label: 'Chain Snatching', value: '34', delta: 'Last 30 days', color: 'text-red-400' },
+        { label: 'Vehicle Matches', value: '14', delta: 'Black Pulsar', color: 'text-orange-400' },
+        { label: 'Hotspot Density', value: 'High', delta: 'Mysuru West', color: 'text-yellow-400' },
+        { label: 'Priority', value: 'Critical', delta: 'Weekend focus', color: 'text-green-400' },
+      ];
+    }
+
+    if (lowerQuery.includes('repeat offender')) {
+      return [
+        { label: 'Repeat Offenders', value: '12', delta: 'Flagged', color: 'text-red-400' },
+        { label: 'Priority Cases', value: '6', delta: 'High risk', color: 'text-orange-400' },
+        { label: 'District Links', value: '3', delta: 'Belagavi', color: 'text-yellow-400' },
+        { label: 'Follow-up', value: 'Live', delta: 'Monitor now', color: 'text-green-400' },
+      ];
+    }
+
+    if (lowerQuery.includes('burglary') || lowerQuery.includes('hotspot')) {
+      return [
+        { label: 'Hotspot Risk', value: '92%', delta: 'Whitefield', color: 'text-red-400' },
+        { label: 'Crowd Surge', value: '8k', delta: 'Expected', color: 'text-orange-400' },
+        { label: 'Patrol Gap', value: '2 hrs', delta: 'Needs fill', color: 'text-yellow-400' },
+        { label: 'Deploy', value: 'Immediate', delta: 'Critical', color: 'text-green-400' },
+      ];
+    }
+
+    return DEFAULT_METRICS;
+  }, [nlQuery]);
 
   return (
     <>
@@ -78,7 +111,7 @@ export default function MainDashboard() {
 
         {/* Live metrics strip */}
         <div className="hidden lg:flex items-center gap-6">
-          {LIVE_METRICS.map((m) => (
+          {liveMetrics.map((m) => (
             <div key={m.label} className="text-center">
               <div className={`text-lg font-bold leading-none ${m.color}`}>{m.value}</div>
               <div className="text-[10px] text-gray-500">{m.label}</div>
