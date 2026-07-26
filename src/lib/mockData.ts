@@ -14,7 +14,7 @@ export const getNetworkData = () => {
     data: { label: net.name },
     position: { x: i * 200, y: i * 100 },
   }));
-  const edges = [];
+  const edges: Array<{ id: string; source: string; target: string; animated: boolean }> = [];
   mockData.networks.forEach(net => {
     net.member_ids.forEach(memberId => {
       edges.push({ id: `${net.id}-${memberId}`, source: net.leader_id, target: memberId, animated: true });

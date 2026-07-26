@@ -13,6 +13,10 @@ import ActionRecommendations from '@/components/intelligence/ActionRecommendatio
 import ConfidenceMeter from '@/components/ui/ConfidenceMeter';
 import WhyModal from '@/components/intelligence/WhyModal';
 import AuditLogs from '@/components/tools/AuditLogs';
+import NLFilterBar from '@/components/dashboard/NLFilterBar';
+import InvestigationCanvas from '@/components/workspace/InvestigationCanvas';
+import DetectiveAutoWorkflow from '@/components/workspace/DetectiveAutoWorkflow';
+import BriefingGenerator from '@/components/intelligence/BriefingGenerator';
 
 type Module = 'timeline' | 'network' | 'heatmap' | 'forecast';
 type RightPanel = 'threats' | 'forecast' | 'recommendations' | 'audit';
@@ -37,6 +41,15 @@ export default function MainDashboard() {
   const [isPipelineActive, setIsPipelineActive] = useState(false);
   const [rightPanel, setRightPanel] = useState<RightPanel>('threats');
   const [whyOpen, setWhyOpen] = useState(false);
+  const [nlQuery, setNlQuery] = useState('');
+  const [nlSummary, setNlSummary] = useState('Investigation focus');
+  const [nlFilters, setNlFilters] = useState<string[]>(['Live intelligence', 'Open cases']);
+
+  const handleQueryChange = (query: string, summary: string, filters: string[]) => {
+    setNlQuery(query);
+    setNlSummary(summary);
+    setNlFilters(filters);
+  };
 
   return (
     <>
@@ -108,7 +121,11 @@ export default function MainDashboard() {
             )}
           </div>
           <div className="flex-1 overflow-hidden">
-            <ChatInterface onAnalyzeStart={() => setIsAnalyzing(true)} onAnalyzeEnd={() => setIsAnalyzing(false)} />
+            <ChatInterface
+              onAnalyzeStart={() => setIsAnalyzing(true)}
+              onAnalyzeEnd={() => setIsAnalyzing(false)}
+              onQueryChange={handleQueryChange}
+            />
           </div>
         </section>
 
@@ -138,6 +155,14 @@ export default function MainDashboard() {
           </div>
 
           <div className="flex-1 relative overflow-hidden">
+            <NLFilterBar query={nlQuery} summary={nlSummary} filters={nlFilters} />
+
+            <div className="p-4 space-y-4 h-full overflow-y-auto">
+              <InvestigationCanvas />
+              <DetectiveAutoWorkflow />
+              <BriefingGenerator />
+            </div>
+
             {/* Analyzing overlay */}
             <AnimatePresence>
               {isAnalyzing && (

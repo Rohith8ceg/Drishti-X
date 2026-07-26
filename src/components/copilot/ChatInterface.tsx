@@ -12,7 +12,13 @@ interface ChatMessage {
   confidence?: number;
 }
 
-export default function ChatInterface({ onAnalyzeStart, onAnalyzeEnd }: { onAnalyzeStart: () => void, onAnalyzeEnd: () => void }) {
+interface ChatInterfaceProps {
+  onAnalyzeStart: () => void;
+  onAnalyzeEnd: () => void;
+  onQueryChange?: (query: string, summary: string, filters: string[]) => void;
+}
+
+export default function ChatInterface({ onAnalyzeStart, onAnalyzeEnd, onQueryChange }: ChatInterfaceProps) {
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([
@@ -30,27 +36,45 @@ export default function ChatInterface({ onAnalyzeStart, onAnalyzeEnd }: { onAnal
 
   const handleSend = (text: string) => {
     if (!text.trim()) return;
-    
+
+    const normalized = text.trim();
+
     // Add user message
-    const newMsg: ChatMessage = { id: Date.now().toString(), sender: 'user', text };
+    const newMsg: ChatMessage = { id: Date.now().toString(), sender: 'user', text: normalized };
     setMessages(prev => [...prev, newMsg]);
     setInput('');
     setIsTyping(true);
     onAnalyzeStart();
 
+    let summary = 'Investigating the latest leads';
+    let filters = ['Open cases', 'Live risk'];
+
+    if (normalized.toLowerCase().includes('chain snatching')) {
+      summary = 'Chain snatching pattern in Mysuru';
+      filters = ['Mysuru', 'Weekend', 'Two-wheelers'];
+    } else if (normalized.toLowerCase().includes('repeat offender')) {
+      summary = 'Repeat offender review';
+      filters = ['Belagavi', 'Repeat offenders', 'High risk'];
+    } else if (normalized.toLowerCase().includes('burglary') || normalized.toLowerCase().includes('hotspot')) {
+      summary = 'Burglary hotspot forecast';
+      filters = ['Whitefield', 'Weekend', 'Crowd surge'];
+    }
+
+    onQueryChange?.(normalized, summary, filters);
+
     // Simulate AI thinking and response
     setTimeout(() => {
       setIsTyping(false);
       onAnalyzeEnd();
-      
+
       let aiResponse = "I have analyzed the intelligence records. I found 3 highly correlated incidents matching that pattern.";
       let suggestions = ["Show suspects", "Predict next incident", "Deploy patrol"];
-      
-      if (text.toLowerCase().includes('chain snatching')) {
+
+      if (normalized.toLowerCase().includes('chain snatching')) {
         aiResponse = "I found 14 chain snatching cases in Mysuru over the last 30 days. 78% of these involved a black Pulsar two-wheeler.";
         suggestions = ["Show vehicle matches", "Map the hotspot", "Identify known associates"];
       }
-      
+
       setMessages(prev => [...prev, {
         id: (Date.now() + 1).toString(),
         sender: 'ai',
@@ -58,7 +82,7 @@ export default function ChatInterface({ onAnalyzeStart, onAnalyzeEnd }: { onAnal
         confidence: 94,
         suggestions
       }]);
-    }, 3500); // 3.5s analyzing simulation to let the spinner shine
+    }, 3500);
   };
 
   return (
