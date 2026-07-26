@@ -1,5 +1,6 @@
+"use client";
 import React, { useEffect, useState } from 'react';
-import ReactFlow, { MiniMap, Controls, Background } from '@xyflow/react';
+import { ReactFlow, MiniMap, Controls, Background } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { getNetworkData } from '@/lib/mockData';
 
