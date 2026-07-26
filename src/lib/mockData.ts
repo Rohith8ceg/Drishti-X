@@ -1,4 +1,28 @@
 // src/lib/mockData.ts
+export const getTimelineEvents = () => {
+  // Simple mock: return first 20 crimes sorted by timestamp
+  return mockData.crimes
+    .sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime())
+    .slice(0, 20)
+    .map(cr => ({ time: new Date(cr.timestamp).toLocaleString(), title: `${cr.type} at ${cr.district}` }));
+};
+
+export const getNetworkData = () => {
+  // Convert mock networks into React Flow nodes/edges format
+  const nodes = mockData.networks.map((net, i) => ({
+    id: net.id,
+    data: { label: net.name },
+    position: { x: i * 200, y: i * 100 },
+  }));
+  const edges = [];
+  mockData.networks.forEach(net => {
+    net.member_ids.forEach(memberId => {
+      edges.push({ id: `${net.id}-${memberId}`, source: net.leader_id, target: memberId, animated: true });
+    });
+  });
+  return { nodes, edges };
+};
+
 
 export type CrimeType = 'Burglary' | 'Chain Snatching' | 'Cybercrime' | 'Homicide' | 'Narcotics' | 'Vehicle Theft';
 export type Severity = 'High' | 'Medium' | 'Low';
