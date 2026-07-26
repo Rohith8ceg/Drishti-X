@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ShieldAlert, Crosshair, Radar, BrainCircuit, Activity, Zap } from 'lucide-react';
+import TimelineReplay from '@/components/visualizers/TimelineReplay';
+import NetworkGraph from '@/components/intelligence/NetworkGraph';
 import ChatInterface from '@/components/copilot/ChatInterface';
 import AgentPipeline from '@/components/agent/AgentPipeline';
 
@@ -97,11 +98,14 @@ export default function MainDashboard() {
               </motion.div>
             )}
             
-            {/* Placeholder for Canvas Modules */}
-            <div className="text-center">
-              <Crosshair className="w-16 h-16 text-gray-700 mx-auto mb-4" />
-              <p className="text-gray-500 font-mono">CANVAS RENDERER WAITING FOR QUERY...</p>
-            </div>
+            {activeModule === 'timeline' && <TimelineReplay />}
+            {activeModule === 'network' && <NetworkGraph />}
+            {activeModule !== 'timeline' && activeModule !== 'network' && (
+              <div className="text-center">
+                <Crosshair className="w-16 h-16 text-gray-700 mx-auto mb-4" />
+                <p className="text-gray-500 font-mono">CANVAS RENDERER WAITING FOR QUERY...</p>
+              </div>
+            )}
           </div>
         </section>
 
