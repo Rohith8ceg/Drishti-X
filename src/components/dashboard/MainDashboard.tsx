@@ -2,10 +2,12 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { Zap, Activity, Radar, Crosshair, ShieldAlert } from 'lucide-react';
 import TimelineReplay from '@/components/visualizers/TimelineReplay';
 import NetworkGraph from '@/components/intelligence/NetworkGraph';
 import ChatInterface from '@/components/copilot/ChatInterface';
 import AgentPipeline from '@/components/agent/AgentPipeline';
+import BrainCircuit from '@/components/ui/icons/BrainCircuit';
 
 export default function MainDashboard() {
   const [activeModule, setActiveModule] = useState<'timeline' | 'network' | 'heatmap'>('network');
